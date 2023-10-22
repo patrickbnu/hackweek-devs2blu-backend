@@ -33,7 +33,9 @@ public class SecurityFilter {
                     "/swagger-ui.html",
                     "/v3/api-docs/**",
                     "/webjars/**",
-                    "/actuator/health"
+                    "/actuator",
+                    "/actuator/health",
+                    "/actuator/health/**"
             ),
             HttpMethod.POST, List.of(
                     "/auth/login",
