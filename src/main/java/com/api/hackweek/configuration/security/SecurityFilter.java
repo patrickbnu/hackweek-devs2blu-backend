@@ -35,7 +35,12 @@ public class SecurityFilter {
                     "/webjars/**",
                     "/actuator",
                     "/actuator/health",
-                    "/actuator/health/**"
+                    "/actuator/health/**",
+                    "/pluggy",
+                    "/pluggy/connectors",
+                    "/pluggy/account/**",
+                    "/pluggy/transactions/**",
+                    "/pluggy/transactions/**/search"
             ),
             HttpMethod.POST, List.of(
                     "/auth/login",

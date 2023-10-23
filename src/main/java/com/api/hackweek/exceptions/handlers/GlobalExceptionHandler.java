@@ -1,7 +1,6 @@
 package com.api.hackweek.exceptions.handlers;
 
 import com.api.hackweek.exceptions.JwtSecurityException;
-import com.api.hackweek.exceptions.LoginAlreadyExists;
 import com.api.hackweek.models.error.ErrorDto;
 import com.api.hackweek.models.error.FieldErrorDto;
 import com.api.hackweek.utils.constants.ErrorMessages;
@@ -12,9 +11,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,13 +37,27 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorDto> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        return ResponseEntity.badRequest().body(
+                ErrorDto.builder()
+                        .message(ErrorMessages.VALIDATION_ERROR)
+                        .status(HttpStatus.BAD_REQUEST.name())
+                        .errors(
+                                List.of(new FieldErrorDto(ex.getParameterName(), ex.getMessage()))
+                        )
+                        .build()
+        );
+    }
+
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ErrorDto> handleAuthenticationException(AuthenticationException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                 ErrorDto.builder()
                         .message(ex.getMessage())
-                        .status(HttpStatus.UNAUTHORIZED.toString())
+                        .status(HttpStatus.UNAUTHORIZED.name())
                         .build()
         );
     }
@@ -52,7 +68,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
                 ErrorDto.builder()
                         .message(ErrorMessages.INSUFFICIENT_CREDENTIALS)
-                        .status(HttpStatus.FORBIDDEN.toString())
+                        .status(HttpStatus.FORBIDDEN.name())
                         .build()
         );
     }
@@ -63,7 +79,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                 ErrorDto.builder()
                         .message(ex.getMessage())
-                        .status(HttpStatus.UNAUTHORIZED.toString())
+                        .status(HttpStatus.UNAUTHORIZED.name())
                         .build()
         );
     }
@@ -85,19 +101,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 ErrorDto.builder()
                         .message(ex.getMessage())
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                        .build()
-        );
-    }
-
-    // User
-    @ExceptionHandler(LoginAlreadyExists.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorDto> handleLoginAlreadyExists(LoginAlreadyExists ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                ErrorDto.builder()
-                        .message(ex.getMessage())
-                        .status(HttpStatus.BAD_REQUEST.toString())
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
                         .build()
         );
     }
