@@ -1,5 +1,6 @@
 package com.api.hackweek.models.user;
 
+import ai.pluggy.client.response.InvestorProfile;
 import com.api.hackweek.entity_listeners.UserEntityListener;
 import com.api.hackweek.enums.UserRole;
 import jakarta.persistence.*;
@@ -31,6 +32,14 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private InvestorProfile investorProfile;
+
+    private UUID itemId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

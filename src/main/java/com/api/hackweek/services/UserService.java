@@ -1,8 +1,7 @@
 package com.api.hackweek.services;
 
 import com.api.hackweek.exceptions.LoginAlreadyExists;
-import com.api.hackweek.models.user.UserRequestDto;
-import com.api.hackweek.models.user.UserResponseDto;
+import com.api.hackweek.models.user.*;
 import com.api.hackweek.repositories.UserRepository;
 import com.api.hackweek.utils.constants.ErrorMessages;
 import com.api.hackweek.utils.mapper.UserMapper;
@@ -29,5 +28,21 @@ public class UserService {
         return mapper.toResponse(
                 userRepository.save(mapper.toEntity(request))
         );
+    }
+
+    public UserResponseDto updateInvestorProfile(UserInvestorProfileDto request) {
+        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USERNAME_NOT_FOUND));
+
+        user.setInvestorProfile(request.getInvestorProfile());
+
+        return mapper.toResponse(userRepository.save(user));
+    }
+
+    public UserResponseDto linkBankAccount(UserAccountSyncDto request) {
+        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USERNAME_NOT_FOUND));
+
+        user.setItemId(request.getBankAccountId());
+
+        return mapper.toResponse(userRepository.save(user));
     }
 }

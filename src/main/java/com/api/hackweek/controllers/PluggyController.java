@@ -26,20 +26,20 @@ public class PluggyController {
         return ResponseEntity.ok().body(pluggyService.getConnectors());
     }
 
-    @GetMapping("/account/{id}")
-    public ResponseEntity<AccountsResponse> getAccount(@PathVariable UUID id) {
-        return ResponseEntity.ok().body(pluggyService.getAccount(id));
+    @GetMapping("/account/{itemId}")
+    public ResponseEntity<AccountsResponse> getAccount(@PathVariable UUID itemId) {
+        return ResponseEntity.ok().body(pluggyService.getAccount(itemId));
     }
 
-    @GetMapping("/transactions/{id}")
-    public ResponseEntity<TransactionsResponse> getTransactions(@PathVariable UUID id,
+    @GetMapping("/transactions/{accountId}")
+    public ResponseEntity<TransactionsResponse> getTransactions(@PathVariable UUID accountId,
                                                                 TransactionsSearchRequest searchRequest) {
-        return ResponseEntity.ok().body(pluggyService.getTransactions(id, searchRequest));
+        return ResponseEntity.ok().body(pluggyService.getTransactions(accountId, searchRequest));
     }
 
-    @GetMapping("/transactions/{id}/search")
-    public ResponseEntity<List<TransactionMonthResponse>> getTransactions(@PathVariable UUID id,
+    @GetMapping("/transactions/{accountId}/search")
+    public ResponseEntity<List<TransactionMonthResponse>> getTransactions(@PathVariable UUID accountId,
                                                                           @Valid TransactionRequest transactionRequest) {
-        return ResponseEntity.ok().body(pluggyService.getTransactions(id, transactionRequest));
+        return ResponseEntity.ok().body(pluggyService.getTransactions(accountId, transactionRequest));
     }
 }

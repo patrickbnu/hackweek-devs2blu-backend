@@ -7,6 +7,7 @@ import com.api.hackweek.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,6 +47,20 @@ public class GlobalExceptionHandler {
                         .status(HttpStatus.BAD_REQUEST.name())
                         .errors(
                                 List.of(new FieldErrorDto(ex.getParameterName(), ex.getMessage()))
+                        )
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        return ResponseEntity.badRequest().body(
+                ErrorDto.builder()
+                        .message(ErrorMessages.VALIDATION_ERROR)
+                        .status(HttpStatus.BAD_REQUEST.name())
+                        .errors(
+                                List.of(new FieldErrorDto("body", ex.getMessage()))
                         )
                         .build()
         );

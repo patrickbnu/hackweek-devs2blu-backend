@@ -29,8 +29,8 @@ public class PluggyService {
         return executeRequest(pluggyClient.service().getConnectors());
     }
 
-    public AccountsResponse getAccount(UUID accountId) {
-        return executeRequest(pluggyClient.service().getAccounts(accountId.toString()));
+    public AccountsResponse getAccount(UUID itemId) {
+        return executeRequest(pluggyClient.service().getAccounts(itemId.toString()));
     }
 
     public TransactionsResponse getTransactions(UUID accountId, TransactionsSearchRequest searchRequest) {
