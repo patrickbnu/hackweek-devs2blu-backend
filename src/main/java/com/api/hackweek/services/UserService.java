@@ -1,5 +1,6 @@
 package com.api.hackweek.services;
 
+import com.api.hackweek.enums.UserRole;
 import com.api.hackweek.exceptions.LoginAlreadyExists;
 import com.api.hackweek.models.user.*;
 import com.api.hackweek.repositories.UserRepository;
@@ -25,8 +26,12 @@ public class UserService {
             throw new LoginAlreadyExists();
         }
 
+        User user = mapper.toEntity(request);
+
+        user.setRole(UserRole.USER);
+
         return mapper.toResponse(
-                userRepository.save(mapper.toEntity(request))
+                userRepository.save(user)
         );
     }
 
