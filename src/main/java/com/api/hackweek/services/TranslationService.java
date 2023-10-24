@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TranslationService {
-    private static final String PORTUGUESE_LANGUAGE = "pt";
+    private final Translate translate;
 
     public String translateToPortuguese(String text) {
-        Translate translate = TranslateOptions.getDefaultInstance().getService();
-        Translation translation = translate.translate(text, Translate.TranslateOption.targetLanguage(PORTUGUESE_LANGUAGE));
+        Translation translation = translate.translate(text);
 
         return translation.getTranslatedText();
     }
