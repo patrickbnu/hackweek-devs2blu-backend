@@ -4,6 +4,7 @@ import ai.pluggy.client.request.TransactionsSearchRequest;
 import ai.pluggy.client.response.AccountsResponse;
 import ai.pluggy.client.response.ConnectorsResponse;
 import ai.pluggy.client.response.TransactionsResponse;
+import com.api.hackweek.models.pluggy.TransactionMonthResponse;
 import com.api.hackweek.models.pluggy.TransactionRequest;
 import com.api.hackweek.services.PluggyService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,8 +38,8 @@ public class PluggyController {
     }
 
     @GetMapping("/transactions/{id}/search")
-    public ResponseEntity<TransactionsResponse> getTransactions(@PathVariable UUID id,
-                                                                @Valid TransactionRequest transactionRequest) {
+    public ResponseEntity<List<TransactionMonthResponse>> getTransactions(@PathVariable UUID id,
+                                                                          @Valid TransactionRequest transactionRequest) {
         return ResponseEntity.ok().body(pluggyService.getTransactions(id, transactionRequest));
     }
 }
