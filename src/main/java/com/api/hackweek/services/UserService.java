@@ -1,22 +1,24 @@
 package com.api.hackweek.services;
 
+import com.api.hackweek.enums.UserRole;
 import com.api.hackweek.exceptions.LoginAlreadyExists;
-import com.api.hackweek.models.user.UserRequestDto;
-import com.api.hackweek.models.user.UserResponseDto;
+import com.api.hackweek.models.user.*;
 import com.api.hackweek.repositories.UserRepository;
 import com.api.hackweek.utils.constants.ErrorMessages;
 import com.api.hackweek.utils.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserMapper mapper;
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USERNAME_NOT_FOUND));
     }
@@ -26,8 +28,28 @@ public class UserService {
             throw new LoginAlreadyExists();
         }
 
+        User user = mapper.toEntity(request);
+
+        user.setRole(UserRole.USER);
+
         return mapper.toResponse(
-                userRepository.save(mapper.toEntity(request))
+                userRepository.save(user)
         );
+    }
+
+    public UserResponseDto updateInvestorProfile(UserInvestorProfileDto request) {
+        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USERNAME_NOT_FOUND));
+
+        user.setInvestorProfile(request.getInvestorProfile());
+
+        return mapper.toResponse(userRepository.save(user));
+    }
+
+    public UserResponseDto linkBankAccount(UserAccountSyncDto request) {
+        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USERNAME_NOT_FOUND));
+
+        user.setItemId(request.getBankAccountId());
+
+        return mapper.toResponse(userRepository.save(user));
     }
 }

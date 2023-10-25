@@ -40,6 +40,10 @@ public class SecurityFilter {
             HttpMethod.POST, List.of(
                     "/auth/login",
                     "/auth/register"
+            ),
+            HttpMethod.PATCH, List.of(
+                    "/user/investor-profile",
+                    "/user/link-bank-account"
             )
     );
 

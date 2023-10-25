@@ -1,0 +1,45 @@
+package com.api.hackweek.controllers;
+
+import ai.pluggy.client.request.TransactionsSearchRequest;
+import ai.pluggy.client.response.AccountsResponse;
+import ai.pluggy.client.response.ConnectorsResponse;
+import ai.pluggy.client.response.TransactionsResponse;
+import com.api.hackweek.models.pluggy.TransactionMonthResponse;
+import com.api.hackweek.models.pluggy.TransactionRequest;
+import com.api.hackweek.services.PluggyService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/pluggy")
+@RequiredArgsConstructor
+public class PluggyController {
+    private final PluggyService pluggyService;
+
+    @GetMapping("/connectors")
+    public ResponseEntity<ConnectorsResponse> getConnectors() {
+        return ResponseEntity.ok().body(pluggyService.getConnectors());
+    }
+
+    @GetMapping("/account/{itemId}")
+    public ResponseEntity<AccountsResponse> getAccount(@PathVariable UUID itemId) {
+        return ResponseEntity.ok().body(pluggyService.getAccount(itemId));
+    }
+
+    @GetMapping("/transactions/{accountId}")
+    public ResponseEntity<TransactionsResponse> getTransactions(@PathVariable UUID accountId,
+                                                                TransactionsSearchRequest searchRequest) {
+        return ResponseEntity.ok().body(pluggyService.getTransactions(accountId, searchRequest));
+    }
+
+    @GetMapping("/transactions/{accountId}/search")
+    public ResponseEntity<List<TransactionMonthResponse>> getTransactions(@PathVariable UUID accountId,
+                                                                          @Valid TransactionRequest transactionRequest) {
+        return ResponseEntity.ok().body(pluggyService.getTransactions(accountId, transactionRequest));
+    }
+}

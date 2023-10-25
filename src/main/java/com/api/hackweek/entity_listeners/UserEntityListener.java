@@ -1,6 +1,5 @@
 package com.api.hackweek.entity_listeners;
 
-import com.api.hackweek.enums.UserRole;
 import com.api.hackweek.models.user.User;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -21,6 +20,5 @@ public class UserEntityListener {
     @PreUpdate
     public void encodePassword(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(UserRole.USER);
     }
 }
