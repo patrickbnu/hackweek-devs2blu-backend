@@ -10,7 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TransactionMonthResponse {
+public class TransactionItem {
     private UUID id;
     private String description;
     private double amount;
