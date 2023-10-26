@@ -18,6 +18,5 @@ public class TransactionRequest {
 
     @Min(value = 1, message = "O mês deve ser maior ou igual a 1")
     @Max(value = 12, message = "O mês deve ser menor ou igual a 12")
-    @NotNull(message = "O mês deve ser informado")
     private Integer month;
 }

@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -35,6 +37,10 @@ public class UserService implements UserDetailsService {
         return mapper.toResponse(
                 userRepository.save(user)
         );
+    }
+
+    public UserResponseDto findById(UUID id) {
+        return mapper.toResponse(userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USER_NOT_FOUND)));
     }
 
     public UserResponseDto updateInvestorProfile(UserInvestorProfileDto request) {
