@@ -1,5 +1,6 @@
 package com.api.hackweek.configuration.security;
 
+import com.api.hackweek.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +37,10 @@ public class SecurityFilter {
                     "/actuator",
                     "/actuator/health",
                     "/actuator/health/**",
-                    "/pluggy/account/**"
+                    "/pluggy/account/**",
+                    "/script",
+                    "/script/**",
+                    "/gpt/financial-education/**"
             ),
             HttpMethod.POST, List.of(
                     "/auth/login",
@@ -66,6 +70,13 @@ public class SecurityFilter {
                                         .flatMap(entry -> entry.getValue().stream().map(uri -> mvc.pattern(entry.getKey(), uri)))
                                         .toArray(RequestMatcher[]::new)
                         ).permitAll()
+
+                        // SCRIPT
+                        .requestMatchers(
+                                mvc.pattern(HttpMethod.POST, "/script"),
+                                mvc.pattern(HttpMethod.PUT, "/script/**"),
+                                mvc.pattern(HttpMethod.DELETE, "/script/**")
+                        ).hasRole(UserRole.ADMIN.name())
 
                         .anyRequest().authenticated()
                 )

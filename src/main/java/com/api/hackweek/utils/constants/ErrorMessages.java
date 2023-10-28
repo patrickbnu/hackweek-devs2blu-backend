@@ -18,4 +18,7 @@ public class ErrorMessages {
     public final String USER_NOT_FOUND = "O usuário não foi encontrado";
     public final String USERNAME_NOT_FOUND = "O nome de usuário não foi encontrado";
     public final String LOGIN_ALREADY_EXISTS = "O login já existe";
+
+    // Script Error Messages
+    public final String SCRIPT_NOT_FOUND = "O script não foi encontrado";
 }
