@@ -3,6 +3,7 @@ package com.api.hackweek.models.user;
 import ai.pluggy.client.response.InvestorProfile;
 import com.api.hackweek.entity_listeners.UserEntityListener;
 import com.api.hackweek.enums.UserRole;
+import com.api.hackweek.models.account.Account;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +45,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
 
     public User(String login, String password, UserRole role) {
         this.login = login;
