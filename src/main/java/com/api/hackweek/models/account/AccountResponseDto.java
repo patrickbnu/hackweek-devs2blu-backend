@@ -2,10 +2,7 @@ package com.api.hackweek.models.account;
 
 import com.api.hackweek.utils.serializers.DoubleFormatSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -13,6 +10,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AccountResponseDto {
     private UUID id;
 
