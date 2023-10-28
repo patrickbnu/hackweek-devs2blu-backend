@@ -37,10 +37,8 @@ public class SecurityFilter {
                     "/actuator",
                     "/actuator/health",
                     "/actuator/health/**",
-                    "/pluggy/account/**",
                     "/script",
-                    "/script/**",
-                    "/gpt/financial-education/**"
+                    "/script/**"
             ),
             HttpMethod.POST, List.of(
                     "/auth/login",

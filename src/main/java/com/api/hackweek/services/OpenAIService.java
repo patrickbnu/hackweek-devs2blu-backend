@@ -25,7 +25,7 @@ public class OpenAIService {
     private final PluggyService pluggyService;
     private final ChatCompletionRequest.ChatCompletionRequestBuilder request;
 
-    public Answer getFinancialEducationalResponse(UUID scriptId, UUID userId) {
+    public Answer getChatResponse(UUID scriptId, UUID userId) {
         ScriptResponseDto script = scriptService.findById(scriptId);
         UserResponseDto user = userService.findById(userId);
 
