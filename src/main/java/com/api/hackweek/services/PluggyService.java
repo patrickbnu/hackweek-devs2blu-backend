@@ -3,7 +3,6 @@ package com.api.hackweek.services;
 import ai.pluggy.client.PluggyClient;
 import ai.pluggy.client.request.TransactionsSearchRequest;
 import ai.pluggy.client.response.Account;
-import ai.pluggy.client.response.AccountsResponse;
 import ai.pluggy.client.response.Transaction;
 import ai.pluggy.client.response.TransactionsResponse;
 import com.api.hackweek.exceptions.PluggyExecutionException;
@@ -31,12 +30,12 @@ public class PluggyService {
     private final UserService userService;
     private final TranslationService translation;
 
-    public AccountsResponse getAccounts(UUID userId) {
-        return executeRequest(pluggyClient.service().getAccounts(userService.findById(userId).getItemId().toString()));
+    public Account getAccount(UUID userId) {
+        return executeRequest(pluggyClient.service().getAccounts(userService.findById(userId).getItemId().toString())).getResults().get(0);
     }
 
     public List<TransactionsPercentage> getTransactions(UUID userId, TransactionRequest transactionRequest) {
-        Account account = getAccounts(userId).getResults().get(0);
+        Account account = getAccount(userId);
         int year = transactionRequest.getYear() == null ? LocalDate.now().getYear() : transactionRequest.getYear();
         int month = transactionRequest.getMonth() == null ? LocalDate.now().getMonthValue() : transactionRequest.getMonth();
         LocalDate startDate = LocalDate.of(year, month, 1);

@@ -2,23 +2,36 @@ package com.api.hackweek.services;
 
 import com.api.hackweek.enums.UserRole;
 import com.api.hackweek.exceptions.LoginAlreadyExists;
+import com.api.hackweek.models.account.Account;
+import com.api.hackweek.models.pluggy.TransactionRequest;
+import com.api.hackweek.models.pluggy.TransactionsPercentage;
 import com.api.hackweek.models.user.*;
 import com.api.hackweek.repositories.UserRepository;
 import com.api.hackweek.utils.constants.ErrorMessages;
 import com.api.hackweek.utils.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private PluggyService pluggyService;
     private final UserMapper mapper;
+
+    public UserService(UserRepository userRepository, @Lazy PluggyService pluggyService, UserMapper mapper) {
+        this.userRepository = userRepository;
+        this.pluggyService = pluggyService;
+        this.mapper = mapper;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,6 +69,28 @@ public class UserService implements UserDetailsService {
 
         user.setItemId(request.getBankAccountId());
 
-        return mapper.toResponse(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+
+        Account account = getAccount(savedUser.getId());
+
+        savedUser.setAccount(account);
+
+        return mapper.toResponse(userRepository.save(savedUser));
+    }
+
+    private Account getAccount(UUID userId) {
+        List<TransactionsPercentage> transactions = pluggyService.getTransactions(userId, new TransactionRequest(LocalDate.now().getYear(), LocalDate.now().getMonthValue()));
+
+        Double income = transactions.stream()
+                .filter(transaction -> transaction.getTotalAmountInCategory() > 0)
+                .mapToDouble(TransactionsPercentage::getTotalAmountInCategory)
+                .sum();
+
+        Double expenses = transactions.stream()
+                .filter(transaction -> transaction.getTotalAmountInCategory() < 0)
+                .mapToDouble(TransactionsPercentage::getTotalAmountInCategory)
+                .sum();
+
+        return new Account(income, expenses);
     }
 }

@@ -1,6 +1,8 @@
 package com.api.hackweek.models.user;
 
 import ai.pluggy.client.response.InvestorProfile;
+import com.api.hackweek.models.account.Account;
+import com.api.hackweek.models.account.AccountResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +25,6 @@ public class UserResponseDto {
 
     @JsonProperty("item_id")
     private UUID itemId;
+
+    private AccountResponseDto account;
 }
