@@ -42,7 +42,10 @@ public class SecurityFilter {
             ),
             HttpMethod.POST, List.of(
                     "/auth/login",
-                    "/auth/register"
+                    "/auth/register",
+                    "/user/forgot-password",
+                    "/user/forgot-password/**",
+                    "/user/reset-password"
             ),
             HttpMethod.PATCH, List.of(
                     "/user/investor-profile",

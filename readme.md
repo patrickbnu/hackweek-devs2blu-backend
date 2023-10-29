@@ -6,9 +6,8 @@ program.
 ## Table of Contents
 
 - [Installation](#installation)
-- [Configuration](#configuration)
 - [Authenticating to GitHub Packages](#authenticating-to-github-packages)
-- [Health Check](#health-check)
+- [Documentation](#documentation)
 - [Project Requirements](#project-requirements)
 - [Project Figma](#project-figma)
 
@@ -25,29 +24,11 @@ git clone https://github.com/EduardoOrthmann/hackweek-devs2blu-backend.git
 > Note: The project uses pluggy-java as a dependency. This dependency is only available in the GitHub Packages repository
 > to which you must be authenticated. To authenticate, follow the instructions as mentioned here [Authenticating to GitHub Packages](#authenticating-to-github-packages).
 
-3. Configure the database connection in the application.properties file as mentioned here [Configuration](#configuration).
+3. Configure the connections and integrations in the application-dev.properties, there is an example file in the project.
 
 4. Run the application.
 
-## Configuration
-
-The following properties can be configured in the application.properties file:
-
-```markdown
-# DATABASE
-spring.datasource.url=jdbc:postgresql://localhost:5432/your_database
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.datasource.driver-class-name=org.postgresql.Driver
-
-- Replace USERNAME with your GitHub username.
-- Replace TOKEN with the personal access token you created.
-
-# HEALTH CHECK
-management.endpoint.health.show-details=always
-```
-
-# Authenticating to GitHub Packages
+### Authenticating to GitHub Packages
 
 - Create a personal access token in your GitHub account. [Creating a personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
 - Create a file named settings.xml in the .m2 folder in your user directory. [Settings](https://maven.apache.org/settings.html)
@@ -91,63 +72,12 @@ xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.o
 </settings>
 ```
 
-## Health Check
+> - Replace USERNAME with your GitHub username.
+> - Replace TOKEN with the personal access token you created.
 
-The health check endpoint is available at http://localhost:8080/actuator/health
+## Documentation
 
-Below are the possible responses:
-
-```
-{
-    "status": "UP",
-    "components": {
-        "db": {
-            "status": "UP",
-            "details": {
-                "database": "PostgreSQL",
-                "validationQuery": "isValid()"
-            }
-        },
-        "diskSpace": {
-            "status": "UP",
-            "details": {
-                "total": 499963174912,
-                "free": 249963174912,
-                "threshold": 10485760
-            }
-        },
-        "ping": {
-            "status": "UP"
-        }
-    }
-}
-```
-
-```
-{
-    "status": "DOWN",
-    "components": {
-        "db": {
-            "status": "DOWN",
-            "details": {
-                "database": "PostgreSQL",
-                "validationQuery": "isValid()"
-            }
-        },
-        "diskSpace": {
-            "status": "UP",
-            "details": {
-                "total": 499963174912,
-                "free": 249963174912,
-                "threshold": 10485760
-            }
-        },
-        "ping": {
-            "status": "UP"
-        }
-    }
-}
-```
+The documentation is available at [Swagger](http://localhost:8080/swagger-ui.html) for the development environment.
 
 ## Project Requirements
 

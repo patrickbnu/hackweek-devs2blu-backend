@@ -42,6 +42,8 @@ public class User implements UserDetails {
 
     private UUID itemId;
 
+    private String resetPasswordToken;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
