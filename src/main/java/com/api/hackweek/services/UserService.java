@@ -25,11 +25,13 @@ import java.util.UUID;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private PluggyService pluggyService;
+    private final EmailService emailService;
     private final UserMapper mapper;
 
-    public UserService(UserRepository userRepository, @Lazy PluggyService pluggyService, UserMapper mapper) {
+    public UserService(UserRepository userRepository, @Lazy PluggyService pluggyService, EmailService emailService, UserMapper mapper) {
         this.userRepository = userRepository;
         this.pluggyService = pluggyService;
+        this.emailService = emailService;
         this.mapper = mapper;
     }
 
@@ -76,6 +78,28 @@ public class UserService implements UserDetailsService {
         savedUser.setAccount(account);
 
         return mapper.toResponse(userRepository.save(savedUser));
+    }
+
+    public void forgotPassword(String login) {
+        User user = userRepository.findByLoginIgnoreCase(login).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USERNAME_NOT_FOUND));
+
+        String resetToken = UUID.randomUUID().toString();
+
+        user.setResetPasswordToken(resetToken);
+
+        userRepository.save(user);
+
+        emailService.sendResetPasswordEmail(user.getLogin(), resetToken);
+    }
+
+    public UserResponseDto resetPassword(UserResetPasswordDto request) {
+        User user = userRepository.findByResetPasswordToken(request.getToken()).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USERNAME_NOT_FOUND));
+
+        user.setPassword(request.getPassword());
+
+        user.setResetPasswordToken(null);
+
+        return mapper.toResponse(userRepository.save(user));
     }
 
     private Account getAccount(UUID userId) {

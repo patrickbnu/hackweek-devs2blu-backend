@@ -4,6 +4,8 @@ import com.api.hackweek.models.pluggy.TransactionRequest;
 import com.api.hackweek.models.pluggy.TransactionsPercentage;
 import com.api.hackweek.models.user.User;
 import com.api.hackweek.services.PluggyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/pluggy")
 @RequiredArgsConstructor
+@Tag(name = "Pluggy")
 public class PluggyController {
     private final PluggyService pluggyService;
 
+    @Operation(summary = "Get transactions by date range and user authenticated")
     @GetMapping("/transactions")
     public ResponseEntity<List<TransactionsPercentage>> getTransactions(@Valid TransactionRequest transactionRequest) {
         User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
