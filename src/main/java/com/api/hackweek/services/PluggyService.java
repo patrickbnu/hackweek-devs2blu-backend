@@ -34,6 +34,10 @@ public class PluggyService {
         return executeRequest(pluggyClient.service().getAccounts(userService.findById(userId).getItemId().toString())).getResults().get(0);
     }
 
+    public Double getBalance(UUID userId) {
+        return getAccount(userId).getBalance();
+    }
+
     public List<TransactionsPercentage> getTransactions(UUID userId, TransactionRequest transactionRequest) {
         Account account = getAccount(userId);
         int year = transactionRequest.getYear() == null ? LocalDate.now().getYear() : transactionRequest.getYear();

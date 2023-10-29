@@ -51,9 +51,9 @@ public class OpenAIService {
         List<TransactionsPercentage> transactions = pluggyService.getTransactions(user.getId(), new TransactionRequest(dateNow.getYear(), dateNow.getMonthValue()));
 
         sb.append("Perfil de investidor: ").append(user.getInvestorProfile()).append(",\n");
-//        sb.append("Total de dinheiro na conta: ").append(user.account.getBalance()).append(",\n");
-//        sb.append("Ganhos por mês: ").append(user.account.getIncome()).append(",\n");
-//        sb.append("Gastos por mês: ").append(user.account.getExpenses()).append(",\n");
+        sb.append("Total de dinheiro na conta: ").append(pluggyService.getBalance(user.getId())).append(",\n");
+        sb.append("Ganhos por mês: ").append(user.getAccount().getIncome()).append(",\n");
+        sb.append("Gastos por mês: ").append(user.getAccount().getExpenses()).append(",\n");
         sb.append("Total de dinheiro na conta: ").append(3200).append(",\n");
         sb.append("Ganhos por mês: ").append(2000).append(",\n");
         sb.append("Gastos por mês: ").append(1200).append(",\n");
