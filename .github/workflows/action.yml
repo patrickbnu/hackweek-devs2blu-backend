@@ -37,8 +37,6 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v2
 
     - name: Build, tag, and push image to Amazon ECR
-      #with:
-      #    repo-token: ${{ secrets.GITHUB_TOKEN }}
       id: build-image
       run: |
         docker build -t patrick:latest .
