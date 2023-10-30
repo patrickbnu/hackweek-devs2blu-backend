@@ -1,0 +1,81 @@
+name: Deploy to AWS Lightsail 
+on:
+  push:
+    branches: [teste_patrick]
+  pull_request:
+    branches: [teste_patrick]
+  workflow_dispatch:
+
+permissions: 
+  id-token: write 
+  contents: read 
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}    
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+      run: aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && aws configure set default.region $AWS_REGION
+
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      run: |      
+        docker build -t patrick:latest .
+        docker tag patrick:latest 794196173640.dkr.ecr.us-east-2.amazonaws.com/patrick:latest
+        docker push 794196173640.dkr.ecr.us-east-2.amazonaws.com/patrick:latest
+
+
+    - name: Deploy deployment.json
+      run: |
+        cat > deployment.json << EOF
+        {
+        "container-service-group10": {
+            "image": "794196173640.dkr.ecr.us-east-2.amazonaws.com/patrick:latest",
+            "command": [],
+            "environment": {
+              "TESTE": "False"
+            },
+            "ports": {
+            "3000": "HTTP"
+            }
+        }
+        }
+        EOF
+        cat deployment.json
+
+    - name: Deploy public-endpoint.json
+      run: |
+        cat > public-endpoint.json << EOF
+        {
+        "containerName": "container-service-group10",
+        "containerPort": 3000,
+        "healthCheck": {
+            "path": "/healthcheck/liveness",
+            "intervalSeconds": 10
+        }
+        }
+        EOF
+        cat public-endpoint.json
+      
+
+
+    - name: Deploy AWS Lightsail container
+      run: >
+        aws lightsail create-container-service-deployment 
+        --service-name container-service-group10 
+        --region us-east-2 
+        --containers file://deployment.json 
+        --public-endpoint file://public-endpoint.json
