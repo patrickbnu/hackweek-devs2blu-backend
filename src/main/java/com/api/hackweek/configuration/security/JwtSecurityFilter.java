@@ -26,14 +26,18 @@ import java.io.IOException;
 
 @Component
 @NonNullApi
-@RequiredArgsConstructor
 public class JwtSecurityFilter extends OncePerRequestFilter {
     private final UserService userService;
     private final JwtUtils jwtUtils;
     private final HandlerMappingIntrospector introspection;
-
-    @Qualifier("handlerExceptionResolver")
     private final HandlerExceptionResolver resolver;
+
+    public JwtSecurityFilter(UserService userService, JwtUtils jwtUtils, HandlerMappingIntrospector introspection, @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+        this.userService = userService;
+        this.jwtUtils = jwtUtils;
+        this.introspection = introspection;
+        this.resolver = resolver;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
