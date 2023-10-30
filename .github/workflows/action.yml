@@ -1,9 +1,9 @@
 name: Deploy to AWS Lightsail 
 on:
   push:
-    branches: [teste_patrick]
+    branches: [main]
   pull_request:
-    branches: [teste_patrick]
+    branches: [main]
   workflow_dispatch:
 
 permissions: 
