@@ -20,7 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 ),
                 @Server(
                         description = "Production Server",
-                        url = "https://gastocerto.com"
+                        url = "https://container-service-group10.3h87hd4vp7724.us-east-2.cs.amazonlightsail.com/"
                 )
         }
 )
