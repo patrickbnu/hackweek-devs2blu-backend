@@ -22,7 +22,7 @@ jobs:
       run: envsubst < settings.xml.j2 > settings.xml
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-        MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+        MAVEN_TOKEN: ${{ secrets.MAVEN_PASSWORD }}
 
     - name: Configure AWS credentials
       env:

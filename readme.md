@@ -16,7 +16,7 @@ program.
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/EduardoOrthmann/hackweek-devs2blu-backend.git
+git clone https://github.com/Ultimate-Go-Horse-Team/hackweek-devs2blu-backend.git
 ```
 
 2. Install dependencies with Maven.
@@ -26,7 +26,11 @@ git clone https://github.com/EduardoOrthmann/hackweek-devs2blu-backend.git
 
 3. Configure the connections and integrations in the application-dev.properties, there is an example file in the project.
 
-4. Run the application.
+4. Run the application using your preferred IDE or using the command below:
+
+```bash
+./mvnw spring-boot:run
+```
 
 ### Authenticating to GitHub Packages
 
