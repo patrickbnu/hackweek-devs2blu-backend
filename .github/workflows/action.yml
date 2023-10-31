@@ -55,7 +55,20 @@ jobs:
             "image": "794196173640.dkr.ecr.us-east-2.amazonaws.com/patrick:latest",
             "command": [],
             "environment": {
-              "TESTE": "False"
+              "DB_URL": "${{ secrets.DB_URL }}",
+              "DB_USERNAME": "${{ secrets.DB_USERNAME }}",
+              "DB_PASSWORD": "${{ secrets.DB_PASSWORD }}",
+              "JWT_SECRET": "${{ secrets.JWT_SECRET }}",
+              "JWT_EXPIRATION": "${{ secrets.JWT_EXPIRATION }}",
+              "JWT_ISSUER": "${{ secrets.JWT_ISSUER }}",
+              "PLUGGY_CLIENT_ID": "${{ secrets.PLUGGY_CLIENT_ID }}",
+              "PLUGGY_CLIENT_SECRET": "${{ secrets.PLUGGY_CLIENT_SECRET }}",
+              "GOOGLE_API_KEY": "${{ secrets.GOOGLE_API_KEY }}",
+              "CHAT_GPT_API_KEY": "${{ secrets.CHAT_GPT_API_KEY }}",
+              "SPRING_MAIL_HOST": "${{ secrets.SPRING_MAIL_HOST }}",
+              "SPRING_MAIL_PORT": "${{ secrets.SPRING_MAIL_PORT }}",
+              "SPRING_MAIL_USERNAME": "${{ secrets.SPRING_MAIL_USERNAME }}",
+              "SPRING_MAIL_PASSWORD": "${{ secrets.SPRING_MAIL_PASSWORD }}"
             },
             "ports": {
             "8080": "HTTP"
