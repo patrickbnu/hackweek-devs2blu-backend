@@ -73,7 +73,7 @@ jobs:
               
             },
             "ports": {
-            "8080": "HTTP"
+              "80": "HTTP"
             }
         }
         }
@@ -84,12 +84,16 @@ jobs:
       run: |
         cat > public-endpoint.json << EOF
         {
-        "containerName": "container-service-group10",
-        "containerPort": 8080,
-        "healthCheck": {
-            "path": "/actuator/health",
-            "intervalSeconds": 10
-        }
+          "containerName": "container-service-group10",
+          "containerPort": 8080,
+          "healthCheck": {
+              "path": "/actuator/health",
+              "timeoutSeconds": 10,
+              "intervalSeconds": 50,
+              "healthyThreshold": 3,
+              "unhealthyThreshold": 3,
+              "successCodes": "200-499"
+          }
         }
         EOF
         cat public-endpoint.json
