@@ -58,7 +58,7 @@ jobs:
               "TESTE": "False"
             },
             "ports": {
-            "3000": "HTTP"
+            "8080": "HTTP"
             }
         }
         }
