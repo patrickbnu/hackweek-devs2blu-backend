@@ -19,10 +19,13 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Substituir variáveis no settings.xml
-      run: envsubst < settings.xml.j2 > settings.xml
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
         MAVEN_TOKEN: ${{ secrets.MAVEN_PASSWORD }}
+      run: envsubst < settings.xml.j2 > settings.xml
+
+    - name: mostrar settings.xml
+      run: cat settings.xml
 
     - name: Configure AWS credentials
       env:
