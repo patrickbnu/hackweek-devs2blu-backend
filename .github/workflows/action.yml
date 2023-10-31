@@ -92,7 +92,7 @@ jobs:
               "timeoutSeconds": 10,
               "intervalSeconds": 50,
               "healthyThreshold": 3,
-              "unhealthyThreshold": 3,
+              "unhealthyThreshold": 6,
               "successCodes": "200-499"
           }
         }
