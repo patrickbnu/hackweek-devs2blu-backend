@@ -25,7 +25,7 @@ jobs:
       run: envsubst < settings.xml.j2 > settings.xml
 
     - name: mostrar settings.xml
-      run: cat settings.xml
+      run: cat settings.xml && pwd
 
     - name: Configure AWS credentials
       env:
